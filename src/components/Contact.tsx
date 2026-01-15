@@ -36,17 +36,25 @@ function Contact() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        }),
       });
 
       if (response.ok) {
         setStatus("success");
         setFormData({ name: "", email: "", message: "" });
       } else {
+        const data = await response.json();
+        console.error("Form error:", data);
         setStatus("error");
       }
-    } catch {
+    } catch (err) {
+      console.error("Submission error:", err);
       setStatus("error");
     }
   };
