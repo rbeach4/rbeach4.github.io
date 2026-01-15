@@ -5,14 +5,15 @@ function Hero() {
     <section className="hero">
       <div className="hero-content">
         <h1 className="hero-title">
-          Hi, I'm <span className="highlight">Your Name</span>
+          Hi, I'm <span className="highlight">Richard Beach</span>
         </h1>
         <p className="hero-subtitle">
-          Full Stack Developer | Creative Problem Solver
+          Solutions Architect | Full Stack Engineer | AWS Professional
         </p>
         <p className="hero-description">
-          I build beautiful, responsive, and user-friendly web applications
-          that make a difference.
+          8+ years of experience designing and deploying cloud-native applications.
+          Specialized in AWS infrastructure, containerization, DevOps automation,
+          and leading teams through complex digital transformations.
         </p>
         <div className="hero-buttons">
           <a href="#projects" className="btn btn-primary">

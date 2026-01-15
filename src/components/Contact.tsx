@@ -36,17 +36,18 @@ function Contact() {
         <div className="contact-content">
           <div className="contact-info">
             <p className="contact-description">
-              I'm currently open to new opportunities and collaborations.
-              Whether you have a question, a project idea, or just want to say
-              hello, feel free to reach out!
+              I'm currently open to new consulting opportunities, architecture
+              projects, and collaborations. Whether you need help with cloud
+              migrations, DevOps transformation, or building scalable applications,
+              let's connect!
             </p>
             <div className="contact-links">
-              <a href="mailto:your.email@example.com" className="contact-link">
+              <a href="mailto:ricky@rbeachconsulting.com" className="contact-link">
                 <span className="link-icon">✉</span>
-                your.email@example.com
+                ricky@rbeachconsulting.com
               </a>
               <a
-                href="https://github.com/yourusername"
+                href="https://github.com/rbeach4"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="contact-link"
@@ -55,7 +56,7 @@ function Contact() {
                 GitHub
               </a>
               <a
-                href="https://linkedin.com/in/yourusername"
+                href="https://linkedin.com/in/rbeach4"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="contact-link"

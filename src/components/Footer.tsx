@@ -7,29 +7,27 @@ function Footer() {
     <footer className="footer">
       <div className="footer-container">
         <p className="footer-text">
-          © {currentYear} Your Name. All rights reserved.
+          © {currentYear} Richard Beach. All rights reserved.
         </p>
         <div className="footer-links">
           <a
-            href="https://github.com/yourusername"
+            href="https://github.com/rbeach4"
             target="_blank"
             rel="noopener noreferrer"
           >
             GitHub
           </a>
           <a
-            href="https://linkedin.com/in/yourusername"
+            href="https://linkedin.com/in/rbeach4"
             target="_blank"
             rel="noopener noreferrer"
           >
             LinkedIn
           </a>
           <a
-            href="https://twitter.com/yourusername"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="mailto:ricky@rbeachconsulting.com"
           >
-            Twitter
+            Email
           </a>
         </div>
       </div>

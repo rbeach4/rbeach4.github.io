@@ -8,26 +8,32 @@ function About() {
         <div className="about-content">
           <div className="about-image">
             <div className="image-placeholder">
-              <span>Your Photo</span>
+              <span>RB</span>
             </div>
           </div>
           <div className="about-text">
             <p>
-              Hello! I'm a passionate developer with a love for creating
-              elegant solutions to complex problems. With experience in
-              full-stack development, I enjoy bringing ideas to life through
-              clean, efficient code.
+              I'm a solutions-oriented Full Stack Engineer and AWS Solutions Architect
+              with 8+ years of experience designing and deploying cloud-native applications.
+              I have a proven track record architecting scalable solutions that enhance
+              user experience and align with customer requirements.
             </p>
             <p>
-              When I'm not coding, you can find me exploring new technologies,
-              contributing to open-source projects, or enjoying the outdoors.
-              I believe in continuous learning and pushing the boundaries of
-              what's possible with technology.
+              My expertise spans AWS cloud infrastructure, containerization, DevOps
+              automation, and leading cross-functional teams through complex migrations
+              and digital transformations. I hold an <strong>AWS Certified Solutions
+              Architect – Professional</strong> certification.
             </p>
             <p>
-              I'm always excited to take on new challenges and collaborate
-              with others to build something amazing.
+              Key achievements include leading SOC2 certification efforts, architecting
+              multi-region disaster recovery solutions, and driving FinOps initiatives
+              that reduced infrastructure costs by 40% while achieving 99.99% availability.
             </p>
+            <div className="education">
+              <p><strong>Education:</strong></p>
+              <p>M.S. Cyber Security – Liberty University</p>
+              <p>B.S. Computer Science – Radford University</p>
+            </div>
           </div>
         </div>
       </div>

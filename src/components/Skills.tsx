@@ -1,42 +1,34 @@
 import './Skills.css'
 
-interface Skill {
-  name: string
-  level: number
-}
-
 interface SkillCategory {
   title: string
-  skills: Skill[]
+  skills: string[]
 }
 
 const skillCategories: SkillCategory[] = [
   {
+    title: 'Languages',
+    skills: ['TypeScript', 'JavaScript', 'Python', 'Java', 'C#', 'PHP', 'SQL'],
+  },
+  {
     title: 'Frontend',
-    skills: [
-      { name: 'React', level: 90 },
-      { name: 'TypeScript', level: 85 },
-      { name: 'HTML/CSS', level: 95 },
-      { name: 'JavaScript', level: 90 },
-    ],
+    skills: ['React/Redux/Next.js', 'Vue.js/Nuxt.js', 'Angular', 'HTML5/CSS3/SASS', 'Material-UI', 'Tailwind CSS'],
   },
   {
     title: 'Backend',
-    skills: [
-      { name: 'Node.js', level: 85 },
-      { name: 'Python', level: 80 },
-      { name: 'PostgreSQL', level: 75 },
-      { name: 'MongoDB', level: 80 },
-    ],
+    skills: ['Node.js/Nest.js', 'Java Spring', 'ASP.NET Core', 'GraphQL', 'REST APIs'],
   },
   {
-    title: 'Tools & Others',
-    skills: [
-      { name: 'Git', level: 90 },
-      { name: 'Docker', level: 70 },
-      { name: 'AWS', level: 65 },
-      { name: 'Linux', level: 75 },
-    ],
+    title: 'Databases',
+    skills: ['PostgreSQL', 'MySQL', 'MongoDB', 'DynamoDB', 'Redis', 'Oracle'],
+  },
+  {
+    title: 'AWS Services',
+    skills: ['EC2/ECS/EKS', 'Lambda', 'RDS/Aurora', 'CloudFormation', 'CodePipeline', 'Cognito', 'CloudWatch', 'S3'],
+  },
+  {
+    title: 'DevOps & Tools',
+    skills: ['Terraform', 'Docker', 'Kubernetes', 'Git', 'CI/CD', 'Datadog', 'GitHub Actions'],
   },
 ]
 
@@ -44,25 +36,24 @@ function Skills() {
   return (
     <section id="skills" className="skills">
       <div className="container">
-        <h2 className="section-title">Skills</h2>
+        <h2 className="section-title">Technical Skills</h2>
+        <div className="certifications">
+          <h3 className="cert-title">Certifications</h3>
+          <div className="cert-list">
+            <span className="cert-badge">AWS Solutions Architect – Professional</span>
+            <span className="cert-badge">AWS Solutions Architect – Associate</span>
+            <span className="cert-badge">AWS Cloud Practitioner</span>
+          </div>
+        </div>
         <div className="skills-grid">
           {skillCategories.map((category) => (
             <div key={category.title} className="skill-category">
               <h3 className="category-title">{category.title}</h3>
-              <div className="skill-list">
+              <div className="skill-tags">
                 {category.skills.map((skill) => (
-                  <div key={skill.name} className="skill-item">
-                    <div className="skill-header">
-                      <span className="skill-name">{skill.name}</span>
-                      <span className="skill-percent">{skill.level}%</span>
-                    </div>
-                    <div className="skill-bar">
-                      <div
-                        className="skill-progress"
-                        style={{ width: `${skill.level}%` }}
-                      />
-                    </div>
-                  </div>
+                  <span key={skill} className="skill-tag">
+                    {skill}
+                  </span>
                 ))}
               </div>
             </div>
