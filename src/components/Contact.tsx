@@ -1,63 +1,8 @@
-import { useState, FormEvent, ChangeEvent } from "react";
-import "./Contact.css";
-
-interface FormData {
-  name: string;
-  email: string;
-  message: string;
-}
-
-// TODO: Replace with your Formspree endpoint from https://formspree.io
-const FORMSPREE_ENDPOINT = "https://formspree.io/f/xlggdbkr";
+import { useForm, ValidationError } from '@formspree/react'
+import './Contact.css'
 
 function Contact() {
-  const [formData, setFormData] = useState<FormData>({
-    name: "",
-    email: "",
-    message: "",
-  });
-  const [status, setStatus] = useState<
-    "idle" | "submitting" | "success" | "error"
-  >("idle");
-
-  const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setStatus("submitting");
-
-    try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-        }),
-      });
-
-      if (response.ok) {
-        setStatus("success");
-        setFormData({ name: "", email: "", message: "" });
-      } else {
-        const data = await response.json();
-        console.error("Form error:", data);
-        setStatus("error");
-      }
-    } catch (err) {
-      console.error("Submission error:", err);
-      setStatus("error");
-    }
-  };
+  const [state, handleSubmit] = useForm('xlggdbkr')
 
   return (
     <section id="contact" className="contact">
@@ -99,67 +44,61 @@ function Contact() {
               </a>
             </div>
           </div>
-          <form className="contact-form" onSubmit={handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                placeholder="Your name"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                placeholder="your.email@example.com"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="message">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-                rows={5}
-                placeholder="Your message..."
-              />
-            </div>
-            <button
-              type="submit"
-              className="btn btn-primary"
-              disabled={status === "submitting"}
-            >
-              {status === "submitting" ? "Sending..." : "Send Message"}
-            </button>
-            {status === "success" && (
+
+          {state.succeeded ? (
+            <div className="form-success">
               <p className="form-status success">
-                Thank you! Your message has been sent. I'll get back to you
-                soon.
+                Thank you! Your message has been sent. I'll get back to you soon.
               </p>
-            )}
-            {status === "error" && (
-              <p className="form-status error">
-                Oops! Something went wrong. Please try again or email me
-                directly.
-              </p>
-            )}
-          </form>
+            </div>
+          ) : (
+            <form className="contact-form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="name">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  placeholder="Your name"
+                />
+                <ValidationError prefix="Name" field="name" errors={state.errors} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  placeholder="your.email@example.com"
+                />
+                <ValidationError prefix="Email" field="email" errors={state.errors} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="message">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  rows={5}
+                  placeholder="Your message..."
+                />
+                <ValidationError prefix="Message" field="message" errors={state.errors} />
+              </div>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={state.submitting}
+              >
+                {state.submitting ? 'Sending...' : 'Send Message'}
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </section>
-  );
+  )
 }
 
-export default Contact;
+export default Contact
