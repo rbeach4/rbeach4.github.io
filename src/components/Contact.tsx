@@ -1,33 +1,55 @@
-import { useState, FormEvent, ChangeEvent } from 'react'
-import './Contact.css'
+import { useState, FormEvent, ChangeEvent } from "react";
+import "./Contact.css";
 
 interface FormData {
-  name: string
-  email: string
-  message: string
+  name: string;
+  email: string;
+  message: string;
 }
+
+// TODO: Replace with your Formspree endpoint from https://formspree.io
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xlggdbkr";
 
 function Contact() {
   const [formData, setFormData] = useState<FormData>({
-    name: '',
-    email: '',
-    message: '',
-  })
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [status, setStatus] = useState<
+    "idle" | "submitting" | "success" | "error"
+  >("idle");
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault()
-    // Handle form submission - integrate with your preferred service
-    console.log('Form submitted:', formData)
-    alert('Thank you for your message! I will get back to you soon.')
-    setFormData({ name: '', email: '', message: '' })
-  }
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    setStatus("submitting");
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
 
   return (
     <section id="contact" className="contact">
@@ -38,11 +60,14 @@ function Contact() {
             <p className="contact-description">
               I'm currently open to new consulting opportunities, architecture
               projects, and collaborations. Whether you need help with cloud
-              migrations, DevOps transformation, or building scalable applications,
-              let's connect!
+              migrations, DevOps transformation, or building scalable
+              applications, let's connect!
             </p>
             <div className="contact-links">
-              <a href="mailto:ricky@rbeachconsulting.com" className="contact-link">
+              <a
+                href="mailto:ricky@rbeachconsulting.com"
+                className="contact-link"
+              >
                 <span className="link-icon">✉</span>
                 ricky@rbeachconsulting.com
               </a>
@@ -103,14 +128,30 @@ function Contact() {
                 placeholder="Your message..."
               />
             </div>
-            <button type="submit" className="btn btn-primary">
-              Send Message
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={status === "submitting"}
+            >
+              {status === "submitting" ? "Sending..." : "Send Message"}
             </button>
+            {status === "success" && (
+              <p className="form-status success">
+                Thank you! Your message has been sent. I'll get back to you
+                soon.
+              </p>
+            )}
+            {status === "error" && (
+              <p className="form-status error">
+                Oops! Something went wrong. Please try again or email me
+                directly.
+              </p>
+            )}
           </form>
         </div>
       </div>
     </section>
-  )
+  );
 }
 
-export default Contact
+export default Contact;
