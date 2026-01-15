@@ -1,8 +1,32 @@
-import { useForm, ValidationError } from '@formspree/react'
+import { useState, FormEvent } from 'react'
 import './Contact.css'
 
 function Contact() {
-  const [state, handleSubmit] = useForm('xlggdbkr')
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setStatus('submitting')
+
+    const form = e.currentTarget
+    const formData = new FormData(form)
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        body: formData,
+      })
+
+      if (response.ok) {
+        setStatus('success')
+        form.reset()
+      } else {
+        setStatus('error')
+      }
+    } catch {
+      setStatus('error')
+    }
+  }
 
   return (
     <section id="contact" className="contact">
@@ -45,7 +69,7 @@ function Contact() {
             </div>
           </div>
 
-          {state.succeeded ? (
+          {status === 'success' ? (
             <div className="form-success">
               <p className="form-status success">
                 Thank you! Your message has been sent. I'll get back to you soon.
@@ -53,6 +77,10 @@ function Contact() {
             </div>
           ) : (
             <form className="contact-form" onSubmit={handleSubmit}>
+              {/* Web3Forms access key - get yours at https://web3forms.com */}
+              <input type="hidden" name="access_key" value="743e19bb-b536-450e-ba00-2b15a094ee48" />
+              <input type="hidden" name="subject" value="New contact from portfolio" />
+              
               <div className="form-group">
                 <label htmlFor="name">Name</label>
                 <input
@@ -62,7 +90,6 @@ function Contact() {
                   required
                   placeholder="Your name"
                 />
-                <ValidationError prefix="Name" field="name" errors={state.errors} />
               </div>
               <div className="form-group">
                 <label htmlFor="email">Email</label>
@@ -73,7 +100,6 @@ function Contact() {
                   required
                   placeholder="your.email@example.com"
                 />
-                <ValidationError prefix="Email" field="email" errors={state.errors} />
               </div>
               <div className="form-group">
                 <label htmlFor="message">Message</label>
@@ -84,15 +110,19 @@ function Contact() {
                   rows={5}
                   placeholder="Your message..."
                 />
-                <ValidationError prefix="Message" field="message" errors={state.errors} />
               </div>
               <button
                 type="submit"
                 className="btn btn-primary"
-                disabled={state.submitting}
+                disabled={status === 'submitting'}
               >
-                {state.submitting ? 'Sending...' : 'Send Message'}
+                {status === 'submitting' ? 'Sending...' : 'Send Message'}
               </button>
+              {status === 'error' && (
+                <p className="form-status error">
+                  Something went wrong. Please try again or email me directly.
+                </p>
+              )}
             </form>
           )}
         </div>
