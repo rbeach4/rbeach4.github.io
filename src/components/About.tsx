@@ -7,9 +7,11 @@ function About() {
         <h2 className="section-title">About Me</h2>
         <div className="about-content">
           <div className="about-image">
-            <div className="image-placeholder">
-              <span>RB</span>
-            </div>
+            <img 
+              src="https://media.licdn.com/dms/image/v2/D4E03AQFCb0u6lxc9dg/profile-displayphoto-crop_800_800/B4EZsmRqVRGcAI-/0/1765873728563?e=1770249600&v=beta&t=9AV5nfF5AKGR_yWGvmPHo9NE8_N_TVhzr0m9MGHYyxo"
+              alt="Richard Beach"
+              className="profile-photo"
+            />
           </div>
           <div className="about-text">
             <p>
