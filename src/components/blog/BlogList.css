@@ -1,0 +1,25 @@
+.blog-list {
+  padding: 6rem 2rem;
+  background: #242424;
+  min-height: calc(100vh - 80px);
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 600px) {
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.no-posts {
+  text-align: center;
+  color: #aaa;
+  font-size: 1.1rem;
+  margin-top: 3rem;
+}

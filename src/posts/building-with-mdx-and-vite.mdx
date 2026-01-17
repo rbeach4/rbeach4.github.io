@@ -1,0 +1,132 @@
+---
+title: "Building a Blog with MDX and Vite"
+date: "2026-01-17"
+excerpt: "A technical deep-dive into setting up an MDX-powered blog with Vite, React Router, and TypeScript. Learn the architecture decisions and implementation details."
+tags: ["tutorial", "vite", "mdx", "react", "typescript"]
+slug: "building-with-mdx-and-vite"
+---
+
+# Building a Blog with MDX and Vite
+
+In this post, I'll walk through the technical implementation of this blog, covering the architecture decisions and key implementation details.
+
+## Project Setup
+
+The foundation is a React + Vite + TypeScript application. Here's what we need to add for MDX support:
+
+```bash
+npm install react-router-dom
+npm install -D @mdx-js/mdx @mdx-js/react @mdx-js/rollup
+```
+
+## Vite Configuration
+
+The key to making MDX work with Vite is configuring the Rollup plugin:
+
+```typescript
+import mdx from '@mdx-js/rollup'
+import remarkGfm from 'remark-gfm'
+
+export default defineConfig({
+  plugins: [
+    mdx({
+      remarkPlugins: [remarkGfm],
+      providerImportSource: '@mdx-js/react',
+    }),
+    react(),
+  ],
+})
+```
+
+**Important:** The MDX plugin must come before the React plugin!
+
+## Routing Architecture
+
+This blog uses a hybrid approach:
+
+- `/` - Single-page portfolio (existing functionality)
+- `/blog` - Blog post listing
+- `/blog/:slug` - Individual blog posts
+- `*` - 404 page
+
+### Why This Approach?
+
+1. **SEO-Friendly** - Each post has its own URL
+2. **Shareable** - Users can bookmark individual posts
+3. **Clean Separation** - Portfolio and blog are distinct
+4. **Scalable** - Easy to add more posts
+
+## Content Management
+
+Blog posts are stored as `.mdx` files in `src/posts/` with YAML frontmatter:
+
+```yaml
+---
+title: "Post Title"
+date: "2026-01-16"
+excerpt: "Short description"
+tags: ["react", "vite"]
+slug: "post-slug"
+---
+```
+
+### Loading Posts Dynamically
+
+Vite's glob import feature makes it easy to load all posts:
+
+```typescript
+export async function getAllPosts() {
+  const modules = import.meta.glob('../posts/*.mdx',
+    { eager: true }
+  )
+  // Process and return posts...
+}
+```
+
+## Styling MDX Content
+
+MDX allows you to customize how each HTML element renders:
+
+```typescript
+const components = {
+  h1: (props) => <h1 className="mdx-h1" {...props} />,
+  code: (props) => <code className="mdx-code" {...props} />,
+  // ... more components
+}
+
+<MDXProvider components={components}>
+  <PostContent />
+</MDXProvider>
+```
+
+This ensures consistent styling across all blog posts while maintaining the dark theme.
+
+## GitHub Pages Deployment
+
+One challenge with client-side routing on GitHub Pages is handling direct navigation to routes. The solution:
+
+1. Create a `404.html` that redirects to `index.html`
+2. Preserve the path in sessionStorage
+3. Restore the route on page load
+
+## Performance Considerations
+
+- **Code Splitting** - Each MDX post is lazy-loaded
+- **Static Imports** - Frontmatter is loaded eagerly for fast listing
+- **Optimized Builds** - Vite handles chunking and optimization
+
+## What's Next?
+
+Future enhancements could include:
+
+- Syntax highlighting for code blocks
+- Reading time estimates
+- Table of contents generation
+- Related posts based on tags
+- Search functionality
+
+## Conclusion
+
+MDX + Vite provides an excellent foundation for a developer blog. The combination of static content with dynamic components offers flexibility while maintaining simplicity.
+
+Check out the [source code](#) to see the full implementation!
