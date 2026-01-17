@@ -1,29 +1,8 @@
-import { useState } from 'react'
+import { useForm, ValidationError } from '@formspree/react'
 import './Contact.css'
 
 function Contact() {
-  const [result, setResult] = useState('')
-
-  const onSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    setResult('Sending...')
-    const formData = new FormData(event.currentTarget)
-    formData.append('access_key', '743e19bb-b536-450e-ba00-2b15a094ee48')
-
-    const response = await fetch('https://api.web3forms.com/submit', {
-      method: 'POST',
-      body: formData,
-    })
-
-    const data = await response.json()
-    if (data.success) {
-      setResult('Form Submitted Successfully')
-      event.currentTarget.reset()
-    } else {
-      console.log('Error', data)
-      setResult(data.message)
-    }
-  }
+  const [state, handleSubmit] = useForm('xlggdbkr')
 
   return (
     <section id="contact" className="contact">
@@ -66,46 +45,66 @@ function Contact() {
             </div>
           </div>
 
-          <form className="contact-form" onSubmit={onSubmit}>
+          <form className="contact-form" onSubmit={handleSubmit}>
             <input type="hidden" name="subject" value="New contact from portfolio" />
-            
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                required
-                placeholder="Your name"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                required
-                placeholder="your.email@example.com"
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="message">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                required
-                rows={5}
-                placeholder="Your message..."
-              />
-            </div>
-            <button type="submit" className="btn btn-primary">
-              Send Message
-            </button>
-            {result && (
-              <p className={`form-status ${result === 'Form Submitted Successfully' ? 'success' : ''}`}>
-                {result}
+
+            {state.succeeded && (
+              <p className="form-status success">
+                Message sent successfully! I'll get back to you soon.
               </p>
+            )}
+
+            {!state.succeeded && (
+              <>
+                <div className="form-group">
+                  <label htmlFor="name">Name</label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    placeholder="Your name"
+                  />
+                  <ValidationError
+                    prefix="Name"
+                    field="name"
+                    errors={state.errors}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="email">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    placeholder="your.email@example.com"
+                  />
+                  <ValidationError
+                    prefix="Email"
+                    field="email"
+                    errors={state.errors}
+                  />
+                </div>
+                <div className="form-group">
+                  <label htmlFor="message">Message</label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    required
+                    rows={5}
+                    placeholder="Your message..."
+                  />
+                  <ValidationError
+                    prefix="Message"
+                    field="message"
+                    errors={state.errors}
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary" disabled={state.submitting}>
+                  {state.submitting ? 'Sending...' : 'Send Message'}
+                </button>
+              </>
             )}
           </form>
         </div>
