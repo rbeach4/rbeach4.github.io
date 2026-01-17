@@ -54,7 +54,7 @@ const projects: Project[] = [
   },
   {
     id: 4,
-    title: 'RBeach Consulting',
+    title: 'RBeachConsulting L.L.C.',
     role: 'Owner | Solutions Architect',
     description:
       'Providing solutions architecture and technical leadership consulting to enterprises undergoing digital transformation.',
